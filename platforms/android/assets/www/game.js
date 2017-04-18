@@ -5,6 +5,9 @@ var rotationSpeed = 4;
 var angleRange = [25, 155];
 var visibleTargets = 7;
 var bgColors = [0x62bd18, 0xffbb00, 0xff5300, 0xd21034, 0xff475c, 0x8f16b2];
+var detik = 30;
+var menit = 3;
+var timer, timerEvent, text;
 
 window.onload = function() {	
 	game = new Phaser.Game(640, 960, Phaser.AUTO, "");
@@ -27,6 +30,8 @@ playGame.prototype = {
      create: function(){
           var randx = this.rnd.between(100, 500);
           var randy = this.rnd.between(100, 900);
+          this.txttimer=this.add.text(25, 775, 'timer', { font: "50px Arial", fill: "#ffffff"});
+          
           this.arm = game.add.sprite(randx, randy, "arm");
           this.arm.anchor.set(0, 0.5);
           this.balls = [
@@ -38,9 +43,15 @@ playGame.prototype = {
           this.rotatingDirection = game.rnd.between(0, 1);
           this.destroy = false;
           this.tintColor = bgColors[game.rnd.between(0, bgColors.length - 1)];
+          do{
+               this.tintColor2 = bgColors[game.rnd.between(0, bgColors.length - 1)];     
+          } while(this.tintColor == this.tintColor2)
+          game.stage.backgroundColor = this.tintColor;
           this.targetGroup = game.add.group();
           this.balls[0].anchor.set(0.5);
+          this.balls[0].tint = this.tintColor2;
           this.balls[1].anchor.set(0.5);
+          this.balls[1].tint = this.tintColor2;
           this.rotationAngle = 0;
           this.rotatingBall = 1;
           var target = game.add.sprite(0, 0, "target");
@@ -55,6 +66,21 @@ playGame.prototype = {
           for(var i = 0; i < visibleTargets; i++){
                this.addTarget(); 
           }
+          //this.timerku=this.time.events.loop(Phaser.Timer.SECOND, this.updateCounter(), this);
+          //this.time.events.loop(Phaser.Timer.SECOND, this.updateCounter(), this);
+          timer = game.time.create();
+        
+        // Create a delayed event 1m and 30s from now
+        timerEvent = timer.add(Phaser.Timer.MINUTE * 1 + Phaser.Timer.SECOND * 30, this.endTimer, this);
+        
+        // Start the timer
+        timer.start();
+         /*if (timer.running) {
+            game.debug.text(this.updateCounter(Math.round((timerEvent.delay - timer.ms) / 1000)), 2, 14, "#ff0");
+        }
+        else {
+            game.debug.text("Done!", 2, 14, "#0f0");
+        }*/
 
      },
      update: function(){
@@ -63,6 +89,15 @@ playGame.prototype = {
           this.balls[this.rotatingBall].x = this.balls[1 - this.rotatingBall].x - ballDistance * Math.sin(Phaser.Math.degToRad(this.rotationAngle));
           this.balls[this.rotatingBall].y = this.balls[1 - this.rotatingBall].y + ballDistance * Math.cos(Phaser.Math.degToRad(this.rotationAngle));                    
      },
+     /*render: function () {
+        // If our timer is running, show the time in a nicely formatted way, else show 'Done!'
+        if (timer.running) {
+            this.debug.text(this.formatTime(Math.round((timerEvent.delay - timer.ms) / 1000)), 2, 14, "#ff0");
+        }
+        else {
+            this.debug.text("Done!", 2, 14, "#0f0");
+        }
+    },*/
      changeBall:function(){
           this.arm.position = this.balls[this.rotatingBall].position
           this.rotatingBall = 1 - this.rotatingBall;
@@ -83,10 +118,11 @@ playGame.prototype = {
                this.rotatingBall = 1 - this.rotatingBall;
                this.rotationAngle = this.balls[1 - this.rotatingBall].position.angle(this.balls[this.rotatingBall].position, true) - 90;
                this.arm.angle = this.rotationAngle + 90; 
-               /*for(var i = 0; i < this.targetArray.length; i++){
+               game.stage.backgroundColor = bgColors[game.rnd.between(0, bgColors.length - 1)];
+               for(var i = 0; i < this.targetArray.length; i++){
                     this.targetArray[i].alpha += 1 / 7;  
                }      
-               this.addTarget();*/
+               this.addTarget();
           }
      },
      addTarget: function(){
@@ -111,5 +147,30 @@ playGame.prototype = {
           target.addChild(text);
           this.targetGroup.add(target);   
           this.targetArray.push(target);      
+     },
+     updateCounter: function(s){
+          /*detik--;
+              this.txttimer.text = menit+' : '+detik;
+              if(detik==0){
+                  
+                  detik=60;
+                  menit--;
+                  
+                  
+                  
+              }
+              else if(menit<0 ){
+                  
+                      this.txttimer.text = '0 : 0';
+                      
+                      
+                  } */
+          var minutes = "0" + Math.floor(s / 60);
+        var seconds = "0" + (s - minutes * 60);
+        this.txttimer.text = minutes.substr(-2) + ":" + seconds.substr(-2);
+        return minutes.substr(-2) + ":" + seconds.substr(-2); 
+     },
+     endTimer: function(){
+          timer.stop();
      }
 }
