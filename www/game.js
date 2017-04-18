@@ -67,7 +67,7 @@ playGame.prototype = {
                this.addTarget(); 
           }
           //this.timerku=this.time.events.loop(Phaser.Timer.SECOND, this.updateCounter(), this);
-          //this.time.events.loop(Phaser.Timer.SECOND, this.updateCounter(), this);
+          this.time.events.loop(Phaser.Timer.SECOND, this.updateCounter, this);
           timer = game.time.create();
         
         // Create a delayed event 1m and 30s from now
@@ -75,6 +75,7 @@ playGame.prototype = {
         
         // Start the timer
         timer.start();
+        //this.updateCounter();
          /*if (timer.running) {
             game.debug.text(this.updateCounter(Math.round((timerEvent.delay - timer.ms) / 1000)), 2, 14, "#ff0");
         }
@@ -148,8 +149,8 @@ playGame.prototype = {
           this.targetGroup.add(target);   
           this.targetArray.push(target);      
      },
-     updateCounter: function(s){
-          /*detik--;
+     updateCounter: function(){
+          detik--;
               this.txttimer.text = menit+' : '+detik;
               if(detik==0){
                   
@@ -164,11 +165,11 @@ playGame.prototype = {
                       this.txttimer.text = '0 : 0';
                       
                       
-                  } */
-          var minutes = "0" + Math.floor(s / 60);
+                  } 
+         /* var minutes = "0" + Math.floor(s / 60);
         var seconds = "0" + (s - minutes * 60);
-        this.txttimer.text = minutes.substr(-2) + ":" + seconds.substr(-2);
-        return minutes.substr(-2) + ":" + seconds.substr(-2); 
+        
+        return minutes.substr(-2) + ":" + seconds.substr(-2); */
      },
      endTimer: function(){
           timer.stop();
