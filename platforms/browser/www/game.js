@@ -7,7 +7,7 @@ var visibleTargets = 7;
 var bgColors = [0x62bd18, 0xffbb00, 0xff5300, 0xd21034, 0xff475c, 0x8f16b2];
 var detik = 30;
 var menit = 3;
-
+var timer, timerEvent, text;
 
 window.onload = function() {	
 	game = new Phaser.Game(640, 960, Phaser.AUTO, "");
@@ -30,6 +30,12 @@ playGame.prototype = {
      create: function(){
           var randx = this.rnd.between(100, 500);
           var randy = this.rnd.between(100, 900);
+          this.savedData = localStorage.getItem("circlepath")==null?{score:0}:JSON.parse(localStorage.getItem("circlepath"));
+          var style = {
+               font: "bold 64px Arial",
+               fill: "#ffffff"
+          };
+          var textscore = game.add.text(0, game.height - 64, "Best score: "+this.savedData.score.toString(), style);
           this.txttimer=this.add.text(25, 775, 'timer', { font: "50px Arial", fill: "#ffffff"});
           
           this.arm = game.add.sprite(randx, randy, "arm");
@@ -67,7 +73,21 @@ playGame.prototype = {
                this.addTarget(); 
           }
           //this.timerku=this.time.events.loop(Phaser.Timer.SECOND, this.updateCounter(), this);
-          this.time.events.loop(Phaser.Timer.SECOND, this.updateCounter(), this);
+          this.time.events.loop(Phaser.Timer.SECOND, this.updateCounter, this);
+          timer = game.time.create();
+        
+        // Create a delayed event 1m and 30s from now
+        timerEvent = timer.add(Phaser.Timer.MINUTE * 3 + Phaser.Timer.SECOND * 30, this.endTimer, this);
+        
+        // Start the timer
+        timer.start();
+        //this.updateCounter();
+         /*if (timer.running) {
+            game.debug.text(this.updateCounter(Math.round((timerEvent.delay - timer.ms) / 1000)), 2, 14, "#ff0");
+        }
+        else {
+            game.debug.text("Done!", 2, 14, "#0f0");
+        }*/
 
      },
      update: function(){
@@ -76,6 +96,15 @@ playGame.prototype = {
           this.balls[this.rotatingBall].x = this.balls[1 - this.rotatingBall].x - ballDistance * Math.sin(Phaser.Math.degToRad(this.rotationAngle));
           this.balls[this.rotatingBall].y = this.balls[1 - this.rotatingBall].y + ballDistance * Math.cos(Phaser.Math.degToRad(this.rotationAngle));                    
      },
+     /*render: function () {
+        // If our timer is running, show the time in a nicely formatted way, else show 'Done!'
+        if (timer.running) {
+            this.debug.text(this.formatTime(Math.round((timerEvent.delay - timer.ms) / 1000)), 2, 14, "#ff0");
+        }
+        else {
+            this.debug.text("Done!", 2, 14, "#0f0");
+        }
+    },*/
      changeBall:function(){
           this.arm.position = this.balls[this.rotatingBall].position
           this.rotatingBall = 1 - this.rotatingBall;
@@ -128,22 +157,31 @@ playGame.prototype = {
      },
      updateCounter: function(){
           detik--;
-    this.txttimer.text = menit+' : '+detik;
-    if(detik==0){
+          this.txttimer.text = menit+' : '+detik;
+          if(detik==0){   
+               detik=60;
+               menit--;
+          }
+          else if(menit<0 ){
+               this.txttimer.text = '0 : 0';   
+          } 
+         /* var minutes = "0" + Math.floor(s / 60);
+        var seconds = "0" + (s - minutes * 60);
         
-        detik=60;
-        menit--;
-        
-        
-        
-    }
-    else if(menit<0 ){
-        
-            this.txttimer.text = '0 : 0';
-            //this.timerku.stop();
-            //stopByTimer.call(this);
-            //this.state.start('over');
-            
-        } 
+        return minutes.substr(-2) + ":" + seconds.substr(-2); */
+     },
+     endTimer: function(){
+          timer.stop();
+          
+          localStorage.setItem("circlepath",JSON.stringify({
+               score: Math.max(this.savedData.score, this.steps - visibleTargets)
+          }));
+          game.input.onDown.remove(this.changeBall, this);
+          this.saveRotationSpeed = 0;
+          this.arm.destroy();
+          var gameOverTween = game.add.tween(this.balls[1 - this.rotatingBall]).to({
+               alpha: 0
+          }, 1000, Phaser.Easing.Cubic.Out, true);
+          //textscore.text = "Best Score: "+score;
      }
 }
