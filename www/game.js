@@ -82,12 +82,6 @@ playGame.prototype = {
         // Start the timer
         timer.start();
         //this.updateCounter();
-         /*if (timer.running) {
-            game.debug.text(this.updateCounter(Math.round((timerEvent.delay - timer.ms) / 1000)), 2, 14, "#ff0");
-        }
-        else {
-            game.debug.text("Done!", 2, 14, "#0f0");
-        }*/
 
      },
      update: function(){
