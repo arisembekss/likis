@@ -29,8 +29,8 @@ BasicGame.playGame.prototype = {
      },
      create: function(){
           this.detik = 30;
-          this.menit = 0;
-          //this.curscore = 0;
+          this.menit = 1;
+          this.curscore = 0;
           var randx = this.rnd.between(100, 500);
           var randy = this.rnd.between(150, 850);
           this.savedData = localStorage.getItem("circlepath")==null?{score:0}:JSON.parse(localStorage.getItem("circlepath"));
@@ -40,7 +40,12 @@ BasicGame.playGame.prototype = {
           };
           var textscore = this.add.text(0, 0, "Best score: "+this.savedData.score.toString(), style);
           this.txttimer=this.add.text(0, 900, 'timer', { font: "50px Arial", fill: "#ffffff"});
-          
+          var stylecur = {
+               font: "bold 32px Arial",
+               fill: "#ffffff",
+               align: "center"
+               };
+          this.textcur = this.add.text(100, 900, "current score: "+this.curscore.toString(), stylecur);
           this.arm = this.add.sprite(randx, randy, "arm");
           this.arm.anchor.set(0, 0.5);
           this.balls = [
@@ -104,7 +109,8 @@ BasicGame.playGame.prototype = {
     },*/
      changeBall:function(){
           
-          //this.curscore++;
+          this.curscore += 1;
+          this.textcur.text = "Current Score: "+this.curscore.toString();
           this.arm.position = this.balls[this.rotatingBall].position
           this.rotatingBall = 1 - this.rotatingBall;
           this.rotationAngle = this.balls[1 - this.rotatingBall].position.angle(this.balls[this.rotatingBall].position, true) - 90;
@@ -129,12 +135,7 @@ BasicGame.playGame.prototype = {
                     this.targetArray[i].alpha += 1 / 7;  
                }      
                this.addTarget();
-               /*var stylecur = {
-               font: "bold 32px Arial",
-               fill: "#ffffff",
-               align: "center"
-               };
-               var textcur = this.add.text(100, 900, "current score: "+this.steps.toString(), stylecur);*/
+               
           }
             
      },
