@@ -1,4 +1,4 @@
-var game;
+
 
 var ballDistance = 160;
 var rotationSpeed = 4;
@@ -9,58 +9,59 @@ var detik = 30;
 var menit = 3;
 var timer, timerEvent, text;
 
-window.onload = function() {	
-	game = new Phaser.Game(640, 960, Phaser.AUTO, "");
+/*window.onload = function() {  
+  game = new Phaser.Game(640, 960, Phaser.AUTO, "");
      game.state.add("PlayGame", playGame);
-     game.state.start("PlayGame");
-}
+     game.state.add("MenuGame", menuGame);
+     game.state.start("MenuGame");
+}*/
 
-var playGame = function(game){};
+BasicGame.playGame = function(game){};
 
-playGame.prototype = {
+BasicGame.playGame.prototype = {
      preload: function(){
-          game.load.image("firstball", "firstball.png");
-          game.load.image("secondball", "secondball.png");
-          game.load.image("target", "target.png");
-          game.load.image("arm", "arm.png");
-          game.scale.pageAlignHorizontally = true;
-          game.scale.pageAlignVertically = true;
-          game.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
+          this.load.image("firstball", "firstball.png");
+          this.load.image("secondball", "secondball.png");
+          this.load.image("target", "target.png");
+          this.load.image("arm", "arm.png");
+          this.scale.pageAlignHorizontally = true;
+          this.scale.pageAlignVertically = true;
+          this.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
      },
      create: function(){
           var randx = this.rnd.between(100, 500);
-          var randy = this.rnd.between(100, 900);
+          var randy = this.rnd.between(150, 850);
           this.savedData = localStorage.getItem("circlepath")==null?{score:0}:JSON.parse(localStorage.getItem("circlepath"));
           var style = {
                font: "bold 64px Arial",
                fill: "#ffffff"
           };
-          var textscore = game.add.text(0, game.height - 64, "Best score: "+this.savedData.score.toString(), style);
-          this.txttimer=this.add.text(25, 775, 'timer', { font: "50px Arial", fill: "#ffffff"});
+          var textscore = this.add.text(0, 0, "Best score: "+this.savedData.score.toString(), style);
+          this.txttimer=this.add.text(0, 900, 'timer', { font: "50px Arial", fill: "#ffffff"});
           
-          this.arm = game.add.sprite(randx, randy, "arm");
+          this.arm = this.add.sprite(randx, randy, "arm");
           this.arm.anchor.set(0, 0.5);
           this.balls = [
-               game.add.sprite(randx, randy, "firstball"),
-               game.add.sprite(randx, randy, "secondball")                   
+               this.add.sprite(randx, randy, "firstball"),
+               this.add.sprite(randx, randy, "secondball")                   
           ]
           this.targetArray = [];
           this.steps = 0;
-          this.rotatingDirection = game.rnd.between(0, 1);
+          this.rotatingDirection = this.rnd.between(0, 1);
           this.destroy = false;
-          this.tintColor = bgColors[game.rnd.between(0, bgColors.length - 1)];
+          this.tintColor = bgColors[this.rnd.between(0, bgColors.length - 1)];
           do{
-               this.tintColor2 = bgColors[game.rnd.between(0, bgColors.length - 1)];     
+               this.tintColor2 = bgColors[this.rnd.between(0, bgColors.length - 1)];     
           } while(this.tintColor == this.tintColor2)
-          game.stage.backgroundColor = this.tintColor;
-          this.targetGroup = game.add.group();
+          this.stage.backgroundColor = this.tintColor;
+          this.targetGroup = this.add.group();
           this.balls[0].anchor.set(0.5);
           this.balls[0].tint = this.tintColor2;
           this.balls[1].anchor.set(0.5);
           this.balls[1].tint = this.tintColor2;
           this.rotationAngle = 0;
           this.rotatingBall = 1;
-          var target = game.add.sprite(0, 0, "target");
+          var target = this.add.sprite(0, 0, "target");
           target.anchor.set(0.5);
           target.x = this.balls[0].x;
           target.y = this.balls[0].y;
@@ -68,13 +69,13 @@ playGame.prototype = {
           target.y = this.rnd.between(100, 900);*/
           this.targetGroup.add(target);   
           this.targetArray.push(target);
-          game.input.onDown.add(this.changeBall, this);
+          this.input.onDown.add(this.changeBall, this);
           for(var i = 0; i < visibleTargets; i++){
                this.addTarget(); 
           }
           //this.timerku=this.time.events.loop(Phaser.Timer.SECOND, this.updateCounter(), this);
           this.time.events.loop(Phaser.Timer.SECOND, this.updateCounter, this);
-          timer = game.time.create();
+          timer = this.time.create();
         
         // Create a delayed event 1m and 30s from now
         timerEvent = timer.add(Phaser.Timer.MINUTE * 3 + Phaser.Timer.SECOND * 30, this.endTimer, this);
@@ -107,8 +108,8 @@ playGame.prototype = {
           this.destroy = false;
           var distanceFromTarget = this.balls[this.rotatingBall].position.distance(this.targetArray[1].position);
           if(distanceFromTarget < 20){
-               this.rotatingDirection = game.rnd.between(0, 1);
-               var detroyTween = game.add.tween(this.targetArray[0]).to({
+               this.rotatingDirection = this.rnd.between(0, 1);
+               var detroyTween = this.add.tween(this.targetArray[0]).to({
                     alpha: 0
                }, 500, Phaser.Easing.Cubic.In, true);
                detroyTween.onComplete.add(function(e){
@@ -119,7 +120,7 @@ playGame.prototype = {
                this.rotatingBall = 1 - this.rotatingBall;
                this.rotationAngle = this.balls[1 - this.rotatingBall].position.angle(this.balls[this.rotatingBall].position, true) - 90;
                this.arm.angle = this.rotationAngle + 90; 
-               game.stage.backgroundColor = bgColors[game.rnd.between(0, bgColors.length - 1)];
+               this.stage.backgroundColor = bgColors[this.rnd.between(0, bgColors.length - 1)];
                for(var i = 0; i < this.targetArray.length; i++){
                     this.targetArray[i].alpha += 1 / 7;  
                }      
@@ -130,7 +131,7 @@ playGame.prototype = {
           this.steps++;
           startX = this.targetArray[this.targetArray.length - 1].x;
           startY = this.targetArray[this.targetArray.length - 1].y;          
-          var target = game.add.sprite(0, 0, "target");
+          var target = this.add.sprite(0, 0, "target");
           //var randomAngle = game.rnd.between(angleRange[0] + 90, angleRange[1] + 90);
           target.anchor.set(0.5);
           /*target.x = startX + ballDistance * Math.sin(Phaser.Math.degToRad(randomAngle));
@@ -143,7 +144,7 @@ playGame.prototype = {
                fill: "#" + this.tintColor.toString(16),
                align: "center"
           };
-          var text = game.add.text(0, 0, this.steps.toString(), style);
+          var text = this.add.text(0, 0, this.steps.toString(), style);
           text.anchor.set(0.5);
           target.addChild(text);
           this.targetGroup.add(target);   
@@ -170,10 +171,10 @@ playGame.prototype = {
           localStorage.setItem("circlepath",JSON.stringify({
                score: Math.max(this.savedData.score, this.steps - visibleTargets)
           }));
-          game.input.onDown.remove(this.changeBall, this);
+          this.input.onDown.remove(this.changeBall, this);
           this.saveRotationSpeed = 0;
           this.arm.destroy();
-          var gameOverTween = game.add.tween(this.balls[1 - this.rotatingBall]).to({
+          var gameOverTween = this.add.tween(this.balls[1 - this.rotatingBall]).to({
                alpha: 0
           }, 1000, Phaser.Easing.Cubic.Out, true);
           //textscore.text = "Best Score: "+score;

@@ -1,4 +1,4 @@
-var game;
+
 
 var ballDistance = 160;
 var rotationSpeed = 4;

@@ -5,8 +5,7 @@ var rotationSpeed = 4;
 var angleRange = [25, 155];
 var visibleTargets = 7;
 var bgColors = [0x62bd18, 0xffbb00, 0xff5300, 0xd21034, 0xff475c, 0x8f16b2];
-var detik = 30;
-var menit = 3;
+
 var timer, timerEvent, text;
 
 /*window.onload = function() {  
@@ -29,15 +28,17 @@ BasicGame.playGame.prototype = {
           this.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
      },
      create: function(){
+          this.detik = 30;
+          this.menit = 0;
           var randx = this.rnd.between(100, 500);
-          var randy = this.rnd.between(100, 900);
+          var randy = this.rnd.between(150, 850);
           this.savedData = localStorage.getItem("circlepath")==null?{score:0}:JSON.parse(localStorage.getItem("circlepath"));
           var style = {
                font: "bold 64px Arial",
                fill: "#ffffff"
           };
-          var textscore = this.add.text(0, this.height - 64, "Best score: "+this.savedData.score.toString(), style);
-          this.txttimer=this.add.text(25, 775, 'timer', { font: "50px Arial", fill: "#ffffff"});
+          var textscore = this.add.text(0, 0, "Best score: "+this.savedData.score.toString(), style);
+          this.txttimer=this.add.text(0, 900, 'timer', { font: "50px Arial", fill: "#ffffff"});
           
           this.arm = this.add.sprite(randx, randy, "arm");
           this.arm.anchor.set(0, 0.5);
@@ -78,7 +79,7 @@ BasicGame.playGame.prototype = {
           timer = this.time.create();
         
         // Create a delayed event 1m and 30s from now
-        timerEvent = timer.add(Phaser.Timer.MINUTE * 3 + Phaser.Timer.SECOND * 30, this.endTimer, this);
+        timerEvent = timer.add(Phaser.Timer.MINUTE * this.menit + Phaser.Timer.SECOND * this.detik, this.endTimer, this);
         
         // Start the timer
         timer.start();
@@ -126,6 +127,12 @@ BasicGame.playGame.prototype = {
                }      
                this.addTarget();
           }
+          var stylecur = {
+               font: "bold 32px Arial",
+               fill: "#ffffff",
+               align: "center"
+          };
+          var textcur = this.add.text(100, 900, "current score: "+this.steps.toString(), stylecur);  
      },
      addTarget: function(){
           this.steps++;
@@ -148,16 +155,22 @@ BasicGame.playGame.prototype = {
           text.anchor.set(0.5);
           target.addChild(text);
           this.targetGroup.add(target);   
-          this.targetArray.push(target);      
+          this.targetArray.push(target);
+          var stylecur = {
+               font: "bold 32px Arial",
+               fill: "#ffffff",
+               align: "center"
+          }; 
+          //var textcur = this.add.text(100, 900, "current score: "+this.steps.toString(), stylecur);     
      },
      updateCounter: function(){
-          detik--;
-          this.txttimer.text = menit+' : '+detik;
-          if(detik==0){   
-               detik=60;
-               menit--;
+          this.detik--;
+          this.txttimer.text = this.menit+' : '+this.detik;
+          if(this.detik==0){   
+               this.detik=60;
+               this.menit--;
           }
-          else if(menit<0 ){
+          else if(this.menit<0 ){
                this.txttimer.text = '0 : 0';   
           } 
          /* var minutes = "0" + Math.floor(s / 60);
@@ -174,9 +187,33 @@ BasicGame.playGame.prototype = {
           this.input.onDown.remove(this.changeBall, this);
           this.saveRotationSpeed = 0;
           this.arm.destroy();
+          //target.alpha = 0;
+          this.targetGroup.removeChildren(0, 7);
           var gameOverTween = this.add.tween(this.balls[1 - this.rotatingBall]).to({
                alpha: 0
           }, 1000, Phaser.Easing.Cubic.Out, true);
           //textscore.text = "Best Score: "+score;
+          var styleover = {
+               font: "bold 64px Arial",
+               fill: "#ffffff"
+          };
+          var textover = this.add.text(this.world.centerX, this.world.centerY + 64, "Game Over", styleover);
+          textover.anchor.setTo(0.5, 0.5);
+          textover.alpha = 0;
+          this.btnAgain = this.add.button(this.world.centerX, this.world.centerY - 64, 'firstball', this.starGameAgain, this,'', '', '');
+          this.btnAgain.anchor.setTo(0.5, 0.5);
+          this.btnAgain.alpha = 0;
+          var txtOverTween = this.add.tween(textover).to({
+               alpha: 1
+          }, 400, Phaser.Easing.Cubic.In, true);
+          var btnOverTween = this.add.tween(this.btnAgain).to({
+               alpha: 1
+          }, 400, Phaser.Easing.Cubic.In, true);
+     },
+     starGameAgain: function(){
+          this.state.start("playGame");
+          this.detik = 30;
+          this.menit = 2;
+          timer.start();
      }
 }
