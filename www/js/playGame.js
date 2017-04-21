@@ -30,6 +30,7 @@ BasicGame.playGame.prototype = {
      create: function(){
           this.detik = 30;
           this.menit = 0;
+          //this.curscore = 0;
           var randx = this.rnd.between(100, 500);
           var randy = this.rnd.between(150, 850);
           this.savedData = localStorage.getItem("circlepath")==null?{score:0}:JSON.parse(localStorage.getItem("circlepath"));
@@ -102,6 +103,8 @@ BasicGame.playGame.prototype = {
         }
     },*/
      changeBall:function(){
+          
+          //this.curscore++;
           this.arm.position = this.balls[this.rotatingBall].position
           this.rotatingBall = 1 - this.rotatingBall;
           this.rotationAngle = this.balls[1 - this.rotatingBall].position.angle(this.balls[this.rotatingBall].position, true) - 90;
@@ -126,13 +129,14 @@ BasicGame.playGame.prototype = {
                     this.targetArray[i].alpha += 1 / 7;  
                }      
                this.addTarget();
-          }
-          var stylecur = {
+               /*var stylecur = {
                font: "bold 32px Arial",
                fill: "#ffffff",
                align: "center"
-          };
-          var textcur = this.add.text(100, 900, "current score: "+this.steps.toString(), stylecur);  
+               };
+               var textcur = this.add.text(100, 900, "current score: "+this.steps.toString(), stylecur);*/
+          }
+            
      },
      addTarget: function(){
           this.steps++;
