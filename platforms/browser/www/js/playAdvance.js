@@ -23,12 +23,12 @@ BasicGame.playAdvance.prototype = {
      create: function(){
           this.width = 640;
           this.height = 960;
-          this.savedData = localStorage.getItem("circlepath")==null?{score:0}:JSON.parse(localStorage.getItem("circlepath"));
+          this.savedDataadv = localStorage.getItem("circlepathadv")==null?{score:0}:JSON.parse(localStorage.getItem("circlepathadv"));
           var style = {
                font: "bold 64px Arial",
                fill: "#ffffff"
           };
-          var text = this.add.text(0, this.height - 64, "Best score: "+this.savedData.score.toString(), style);
+          var text = this.add.text(0, this.height - 64, "Best score: "+this.savedDataadv.score.toString(), style);
           this.destroy = false;
           this.saveRotationSpeed = rotationSpeed;
           this.tintColor = bgColors[this.rnd.between(0, bgColors.length - 1)];
@@ -136,8 +136,8 @@ BasicGame.playAdvance.prototype = {
           this.targetArray.push(target);      
      },
      gameOver: function(){
-          localStorage.setItem("circlepath",JSON.stringify({
-               score: Math.max(this.savedData.score, this.steps - visibleTargets)
+          localStorage.setItem("circlepathadv",JSON.stringify({
+               score: Math.max(this.savedDataadv.score, this.steps - visibleTargets)
 	     }));
           this.input.onDown.remove(this.changeBall, this);
           this.saveRotationSpeed = 0;

@@ -1,0 +1,21 @@
+<component name="libraryTable">
+  <library name="debug">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/platforms/android/build/intermediates/pre-dexed/debug/com.google.android.gms-play-services-tasks-10.0.1_f01f3989c27d8527cb09b7c9fc4f43a0073d934a.jar!/" />
+      <root url="jar://$PROJECT_DIR$/platforms/android/build/intermediates/pre-dexed/debug/com.google.android.gms-play-services-basement-10.0.1_183f83f67dcd0cdff4461d3a09e377d4963e90c3.jar!/" />
+      <root url="jar://$PROJECT_DIR$/platforms/android/build/intermediates/pre-dexed/debug/CordovaLib-unspecified-debug_593082363ef3fa16f83d74d69a51d45a87fd610c.jar!/" />
+      <root url="jar://$PROJECT_DIR$/platforms/android/build/intermediates/pre-dexed/debug/com.google.android.gms-play-services-clearcut-10.0.1_984929e36c40412cbd97e22d24cb44d53f3c66d6.jar!/" />
+      <root url="jar://$PROJECT_DIR$/platforms/android/build/intermediates/pre-dexed/debug/com.android.support-support-v4-24.0.0_16ac80a1224f16c497aa91b167955ddbcfe02a4c.jar!/" />
+      <root url="jar://$PROJECT_DIR$/platforms/android/build/intermediates/pre-dexed/debug/com.google.android.gms-play-services-base-10.0.1_6ad61de0e7da88f56337f45a1172d965c25368c7.jar!/" />
+      <root url="jar://$PROJECT_DIR$/platforms/android/build/intermediates/pre-dexed/debug/internal_impl-24.0.0_aad804a2d3c1f7e5fb23c48e9b26179605eac5c4.jar!/" />
+      <root url="jar://$PROJECT_DIR$/platforms/android/build/intermediates/pre-dexed/debug/com.google.android.gms-play-services-ads-10.0.1_abba27149f9fe95cfbe6ff945a5f8a7295a07b24.jar!/" />
+      <root url="jar://$PROJECT_DIR$/platforms/android/build/intermediates/pre-dexed/debug/cordova-generic-ad_6094e3cdd52a182e7cb32347ca0caafdf484696c.jar!/" />
+      <root url="jar://$PROJECT_DIR$/platforms/android/build/intermediates/pre-dexed/debug/support-annotations-24.0.0_5654b0329159336dea6fd48399eac4374be6f4ce.jar!/" />
+      <root url="jar://$PROJECT_DIR$/platforms/android/build/intermediates/pre-dexed/debug/com.google.android.gms-play-services-ads-lite-10.0.1_f1a8563e7cefca02f76cea5781ddb15e962c6707.jar!/" />
+      <root url="jar://$PROJECT_DIR$/platforms/android/build/intermediates/pre-dexed/debug/com.google.android.gms-play-services-gass-10.0.1_bf2e8733d5a4782872b4420ac89c36a0fc252c76.jar!/" />
+      <root url="jar://$PROJECT_DIR$/platforms/android/build/intermediates/pre-dexed/debug/debug_616951f92fb666db06440af9fc899ad7946359dc.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

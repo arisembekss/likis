@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="cordova-generic-ad1">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/platforms/android/build/intermediates/jniLibs/debug/cordova-generic-ad.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

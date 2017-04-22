@@ -9,7 +9,14 @@
     "installed_plugins": {
         "cordova-plugin-whitelist": {
             "PACKAGE_NAME": "io.cordova.hellocordova"
+        },
+        "cordova-plugin-admobpro": {
+            "PACKAGE_NAME": "com.dtech.likis"
         }
     },
-    "dependent_plugins": {}
+    "dependent_plugins": {
+        "cordova-plugin-extension": {
+            "PACKAGE_NAME": "com.dtech.likis"
+        }
+    }
 }
