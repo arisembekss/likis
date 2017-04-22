@@ -32,7 +32,7 @@ BasicGame.playGame.prototype = {
           this.menit = 1;
           this.curscore = 0;
           var randx = this.rnd.between(100, 500);
-          var randy = this.rnd.between(150, 850);
+          var randy = this.rnd.between(150, 800);
           this.savedData = localStorage.getItem("circlepath")==null?{score:0}:JSON.parse(localStorage.getItem("circlepath"));
           var style = {
                font: "bold 64px Arial",
@@ -45,7 +45,7 @@ BasicGame.playGame.prototype = {
                fill: "#ffffff",
                align: "center"
                };
-          this.textcur = this.add.text(100, 900, "current score: "+this.curscore.toString(), stylecur);
+          this.textcur = this.add.text(300, 900, "current score: "+this.curscore.toString(), stylecur);
           this.arm = this.add.sprite(randx, randy, "arm");
           this.arm.anchor.set(0, 0.5);
           this.balls = [
@@ -98,19 +98,9 @@ BasicGame.playGame.prototype = {
           this.balls[this.rotatingBall].x = this.balls[1 - this.rotatingBall].x - ballDistance * Math.sin(Phaser.Math.degToRad(this.rotationAngle));
           this.balls[this.rotatingBall].y = this.balls[1 - this.rotatingBall].y + ballDistance * Math.cos(Phaser.Math.degToRad(this.rotationAngle));                    
      },
-     /*render: function () {
-        // If our timer is running, show the time in a nicely formatted way, else show 'Done!'
-        if (timer.running) {
-            this.debug.text(this.formatTime(Math.round((timerEvent.delay - timer.ms) / 1000)), 2, 14, "#ff0");
-        }
-        else {
-            this.debug.text("Done!", 2, 14, "#0f0");
-        }
-    },*/
+     
      changeBall:function(){
           
-          this.curscore += 1;
-          this.textcur.text = "Current Score: "+this.curscore.toString();
           this.arm.position = this.balls[this.rotatingBall].position
           this.rotatingBall = 1 - this.rotatingBall;
           this.rotationAngle = this.balls[1 - this.rotatingBall].position.angle(this.balls[this.rotatingBall].position, true) - 90;
@@ -133,7 +123,9 @@ BasicGame.playGame.prototype = {
                this.stage.backgroundColor = bgColors[this.rnd.between(0, bgColors.length - 1)];
                for(var i = 0; i < this.targetArray.length; i++){
                     this.targetArray[i].alpha += 1 / 7;  
-               }      
+               }
+               this.curscore += 1;
+               this.textcur.text = "Current Score: "+this.curscore.toString();  
                this.addTarget();
                
           }
@@ -149,7 +141,7 @@ BasicGame.playGame.prototype = {
           /*target.x = startX + ballDistance * Math.sin(Phaser.Math.degToRad(randomAngle));
           target.y = startY + ballDistance * Math.cos(Phaser.Math.degToRad(randomAngle));*/
           target.x = this.rnd.between(100, 500);
-          target.y = this.rnd.between(100, 900);
+          target.y = this.rnd.between(100, 850);
           target.alpha = 1 - this.targetArray.length * (1 / 7);
           var style = {
                font: "bold 32px Arial",
@@ -202,10 +194,10 @@ BasicGame.playGame.prototype = {
                font: "bold 64px Arial",
                fill: "#ffffff"
           };
-          var textover = this.add.text(this.world.centerX, this.world.centerY + 64, "Game Over", styleover);
+          var textover = this.add.text(this.world.centerX, this.world.centerY - 64, "Game Over", styleover);
           textover.anchor.setTo(0.5, 0.5);
           textover.alpha = 0;
-          this.btnAgain = this.add.button(this.world.centerX, this.world.centerY - 64, 'firstball', this.starGameAgain, this,'', '', '');
+          this.btnAgain = this.add.button(this.world.centerX, this.world.centerY + 64, 'firstball', this.starGameAgain, this,'', '', '');
           this.btnAgain.anchor.setTo(0.5, 0.5);
           this.btnAgain.alpha = 0;
           var txtOverTween = this.add.tween(textover).to({

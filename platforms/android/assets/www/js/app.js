@@ -13,6 +13,7 @@
     //game.state.add('Game', BasicGame.Game);
     game.state.add("menu", BasicGame.menuGame);
     game.state.add("playGame", BasicGame.playGame);
+    game.state.add("playAdvance", BasicGame.playAdvance);
     //game.state.add('over', BasicGame.Over);
     /*game.state.add('leve1', levelSatu);
     game.state.add('leve2', levelDua);
