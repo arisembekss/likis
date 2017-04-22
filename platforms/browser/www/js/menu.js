@@ -17,12 +17,12 @@ BasicGame.menuGame.prototype = {
         this.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
 	},
 	create: function(){
-		/*if(AdMob) AdMob.createBanner({
+		if(AdMob) AdMob.createBanner({
             adId: admobid.banner,
             position: AdMob.AD_POSITION.BOTTOM_CENTER,
             
-            autoShow: true });*/
-            if (!Admob) {alert( 'admob plugin not ready' ); return;}
+            autoShow: true });
+            //if (!AdMob) {alert( 'admob plugin not ready' ); return;}
         //AdMob.showBannerAtXY(0, 1000);
         // preppare and load ad resource in background, e.g. at begining of game level
         //if(AdMob) AdMob.prepareInterstitial( {adId:admobid.interstitial, autoShow:false} );
